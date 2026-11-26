@@ -5,6 +5,21 @@ Reverse-engineered protocol par based — sirf streaming: OTP login → series b
 
 ## Termux (Android)
 
+Prebuilt binary (koi build nahi — ~15MB download):
+
+```sh
+pkg update -y && pkg install mpv -y
+curl -L -o r.tgz https://github.com/burpyaura/rigi-tui/releases/latest/download/rigi-tui-aarch64-android.tar.gz
+tar xzf r.tgz && chmod +x rigi-tui
+./rigi-tui
+```
+
+- mpv zaroori hai (external player) — `pkg install mpv`
+- Lambi playback ke dauran `termux-wake-lock` chala lo
+- mpv video Android ke fullscreen surface pe khulega; band karne ke liye mpv ke andar `q`
+
+### Source se build (fallback)
+
 ```sh
 pkg update -y && pkg install git rust clang binutils mpv -y
 git clone https://github.com/burpyaura/rigi-tui.git
@@ -15,8 +30,7 @@ cargo build --release
 
 - `clang` zaroori hai (TLS crate ka C code) aur `binutils` linker ke liye
 - Pehla build 10-20 min le sakta hai; RAM kam aaye to: `CARGO_BUILD_JOBS=2 cargo build --release`
-- Lambi playback ke dauran `termux-wake-lock` chala lo
-- mpv video Android ke fullscreen surface pe khulega; band karne ke liye mpv ke andar `q`
+- Prebuilt binary `aarch64` (2018+ phones) ke liye hai; armv7 ya x86_64 ho to source build karo
 
 ## Build
 
