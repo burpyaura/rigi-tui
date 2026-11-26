@@ -24,9 +24,20 @@ pub fn find_mpv() -> Option<PathBuf> {
 }
 
 impl PlayerHandle {
+    fn work_dir() -> Result<PathBuf> {
+        let dir = std::env::temp_dir().join(format!("rigi-tui-{}", std::process::id()));
+        if std::fs::create_dir_all(&dir).is_ok() {
+            return Ok(dir);
+        }
+        let alt = dirs::cache_dir()
+            .ok_or_else(|| anyhow!("temp aur cache dir dono nahi ban saki"))?
+            .join(format!("rigi-tui-{}", std::process::id()));
+        std::fs::create_dir_all(&alt)?;
+        Ok(alt)
+    }
+
     pub fn spawn(mpv: &PathBuf, uri: &str, cookie: Option<&str>, title: &str) -> Result<Self> {
-        let workdir = std::env::temp_dir().join(format!("rigi-tui-{}", std::process::id()));
-        std::fs::create_dir_all(&workdir)?;
+        let workdir = Self::work_dir()?;
         let mut perms = std::fs::metadata(&workdir)?.permissions();
         perms.set_mode(0o700);
         std::fs::set_permissions(&workdir, perms)?;

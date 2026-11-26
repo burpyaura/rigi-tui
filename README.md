@@ -3,6 +3,21 @@
 Rigi TV (com.litvibes / Rigi TV Android app) ke streaming ke liye terminal client.
 Reverse-engineered protocol par based — sirf streaming: OTP login → series browse → episodes → mpv playback.
 
+## Termux (Android)
+
+```sh
+pkg update -y && pkg install git rust clang binutils mpv -y
+git clone https://github.com/burpyaura/rigi-tui.git
+cd rigi-tui
+cargo build --release
+./target/release/rigi-tui
+```
+
+- `clang` zaroori hai (TLS crate ka C code) aur `binutils` linker ke liye
+- Pehla build 10-20 min le sakta hai; RAM kam aaye to: `CARGO_BUILD_JOBS=2 cargo build --release`
+- Lambi playback ke dauran `termux-wake-lock` chala lo
+- mpv video Android ke fullscreen surface pe khulega; band karne ke liye mpv ke andar `q`
+
 ## Build
 
 ```sh
